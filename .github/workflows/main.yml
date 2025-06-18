@@ -124,6 +124,6 @@ jobs:
 
     # Optional: Terminate EC2 Instance After Job
     # - name: Terminate EC2 Instance
-    #   if: always()
+    #   if: always() gau
     #   run: aws ec2 terminate-instances --instance-ids $INSTANCE_ID --region ap-south-1
 
