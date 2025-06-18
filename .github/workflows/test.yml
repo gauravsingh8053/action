@@ -25,7 +25,7 @@ jobs:
     - name: Create Key Pair (lampkey)
       id: create-key
       run: |
-        echo "Creating EC2 Key Pair Office2..."
+        echo "Creating EC2 Key Pair lampkey..."
         aws ec2 delete-key-pair --key-name lampkey --region ap-south-1 || true
         aws ec2 create-key-pair \
           --key-name lampkey \
@@ -34,7 +34,7 @@ jobs:
           --region ap-south-1 \
           --query 'KeyMaterial' \
           --output text > lampkey.pem
-        chmod 400 Office2.pem
+        chmod 400 lampkey.pem
 
     - name: Create or Reuse Security Group
       id: sg
