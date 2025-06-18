@@ -18,22 +18,22 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-access-key-id: ${{ secrets.GAURAV_SECRET_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.GAURAV_SECRET_KEY_PASS }}
         aws-region: ap-south-1
 
-    - name: Create Key Pair (Office2)
+    - name: Create Key Pair (lampkey)
       id: create-key
       run: |
         echo "Creating EC2 Key Pair Office2..."
-        aws ec2 delete-key-pair --key-name Office2 --region ap-south-1 || true
+        aws ec2 delete-key-pair --key-name lampkey --region ap-south-1 || true
         aws ec2 create-key-pair \
-          --key-name Office2 \
+          --key-name lampkey \
           --key-type rsa \
           --key-format pem \
           --region ap-south-1 \
           --query 'KeyMaterial' \
-          --output text > Office2.pem
+          --output text > lampkey.pem
         chmod 400 Office2.pem
 
     - name: Create or Reuse Security Group
@@ -74,7 +74,7 @@ jobs:
           --image-id ami-03bb6d83c60fc5f7c \
           --count 1 \
           --instance-type t2.micro \
-          --key-name Office2 \
+          --key-name lampkey \
           --security-group-ids $SG_ID \
           --region ap-south-1 \
           --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=Office2Instance}]' \
@@ -112,7 +112,7 @@ jobs:
 
     - name: Clone and Deploy Your PHP Website
       run: |
-        ssh -o StrictHostKeyChecking=no -i Office2.pem ubuntu@$PUBLIC_IP <<EOF
+        ssh -o StrictHostKeyChecking=no -i lampkey.pem ubuntu@$PUBLIC_IP <<EOF
           cd /tmp
           git clone https://github.com/AryanSharma2206/gym-website.git site
           sudo rm -rf /var/www/html/*
