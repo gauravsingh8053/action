@@ -103,7 +103,7 @@ jobs:
 
     - name: Install Apache, PHP 8.1, and MySQL
       run: |
-        ssh -o StrictHostKeyChecking=no -i Office2.pem ubuntu@$PUBLIC_IP <<EOF
+        ssh -o StrictHostKeyChecking=no -i lampkey.pem ubuntu@$PUBLIC_IP <<EOF
           sudo apt update
           sudo apt install -y apache2 php8.1 php8.1-cli php8.1-mysql mysql-server unzip git
           sudo systemctl enable --now apache2
